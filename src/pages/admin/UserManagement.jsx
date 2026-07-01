@@ -1,38 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-
+import API from "../../services/api";
 const UserManagement = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
-    const token = localStorage.getItem('token');
 
     const fetchUsers = async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/api/admin/dashboard/users', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setUsers(response.data);
-            setLoading(false);
-        } catch (error) {
-            console.error("Error fetching users:", error);
-            setLoading(false);
-        }
-    };
+    try {
+        const response = await API.get("/admin/dashboard/users");
 
-    useEffect(() => { fetchUsers(); }, []);
+        setUsers(response.data);
+        setLoading(false);
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        setLoading(false);
+    }
+};
 
-    const togglePlan = async (id, currentPlan) => {
-        const newPlan = currentPlan === 'premium' ? 'basic' : 'premium';
-        try {
-            await axios.put(`http://localhost:8080/api/admin/dashboard/users/${id}/plan?plan=${newPlan}`, {}, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            fetchUsers();
-        } catch (error) {
-            alert("Error updating user plan");
-        }
-    };
+useEffect(() => {
+    fetchUsers();
+}, []);
 
+
+   const togglePlan = async (id, currentPlan) => {
+    const newPlan = currentPlan === "premium" ? "basic" : "premium";
+
+    try {
+        await API.put(
+            `/admin/dashboard/users/${id}/plan?plan=${newPlan}`,
+            {}
+        );
+
+        fetchUsers();
+    } catch (error) {
+        alert("Error updating user plan");
+    }
+};
     if (loading) return <div className="p-6">Loading registered system users...</div>;
 
     return (

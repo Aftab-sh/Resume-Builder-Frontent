@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import API from "../../services/api";
 
 const TemplateManager = () => {
     const [templates, setTemplates] = useState([]);
@@ -24,16 +24,16 @@ const TemplateManager = () => {
         active: true   // ✅ Add active
     });
 
-    const token = localStorage.getItem('token');
 
     const fetchTemplates = async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/api/admin/templates/all', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setTemplates(response.data);
-            setLoading(false);
-        } catch (error) {
+     try {
+        const response = await API.get("/admin/templates/all");
+
+        setTemplates(response.data);
+        setLoading(false);
+
+        }
+         catch (error) {
             console.error("Error fetching templates:", error);
             setLoading(false);
         }
@@ -44,31 +44,39 @@ const TemplateManager = () => {
     // ✅ CREATE
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            await axios.post('http://localhost:8080/api/admin/templates/create', formData, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setShowModal(false);
-            setFormData({ name: '', primaryColor: '#000000', fontFamily: 'Arial', layoutType: 'classic', premium: false, active: true });
-            fetchTemplates();
-        } catch (error) {
+      try {
+    await API.post("/admin/templates/create", formData);
+
+    setShowModal(false);
+
+    setFormData({
+        name: '',
+        primaryColor: '#000000',
+        fontFamily: 'Arial',
+        layoutType: 'classic',
+        premium: false,
+        active: true
+    });
+
+    fetchTemplates();
+}
+         catch (error) {
             alert("Error creating template");
         }
     };
 
     // ✅ DELETE
-    const handleDelete = async (id) => {
-        if(window.confirm("Kya aap is template ko delete karna chahte hain?")) {
-            try {
-                await axios.delete(`http://localhost:8080/api/admin/templates/delete/${id}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                fetchTemplates();
-            } catch (error) {
-                alert("Error deleting template");
-            }
+   const handleDelete = async (id) => {
+    if (window.confirm("Kya aap is template ko delete karna chahte hain?")) {
+        try {
+            await API.delete(`/admin/templates/delete/${id}`);
+
+            fetchTemplates();
+        } catch (error) {
+            alert("Error deleting template");
         }
-    };
+    }
+};
 
     // ✅ EDIT - Open modal
     const handleEdit = (tpl) => {
@@ -86,17 +94,20 @@ const TemplateManager = () => {
 
     // ✅ UPDATE - Submit
     const handleUpdate = async (e) => {
-        e.preventDefault();
-        try {
-            await axios.put(`http://localhost:8080/api/admin/templates/update/${editData.id}`, editData, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setEditModal(false);
-            fetchTemplates();
-        } catch (error) {
-            alert("Error updating template");
-        }
-    };
+    e.preventDefault();
+
+    try {
+        await API.put(
+            `/admin/templates/update/${editData.id}`,
+            editData
+        );
+
+        setEditModal(false);
+        fetchTemplates();
+    } catch (error) {
+        alert("Error updating template");
+    }
+};
 
     if (loading) return <div className="p-6">Loading templates...</div>;
 

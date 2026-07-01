@@ -5,6 +5,8 @@ import TemplateManager from './TemplateManager';
 import UserManagement from './UserManagement';
 import PaymentLogs from './PaymentLogs';
 
+
+
 const AdminPortal = () => {
     const [activeTab, setActiveTab] = useState('stats');
 

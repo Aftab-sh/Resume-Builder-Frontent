@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import API from "../../services/api";
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState({
@@ -12,23 +12,20 @@ const AdminDashboard = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Backend API Call (Token Authorization ke sath)
-        const fetchStats = async () => {
-            try {
-                const token = localStorage.getItem('token'); // Login ke waqt save kiya hua token
-                const response = await axios.get('http://localhost:8080/api/admin/dashboard/stats', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                setStats(response.data);
-                setLoading(false);
-            } catch (error) {
-                console.error("Error fetching admin stats:", error);
-                setLoading(false);
-            }
-        };
+    const fetchStats = async () => {
+        try {
+            const response = await API.get("/admin/dashboard/stats");
 
-        fetchStats();
-    }, []);
+            setStats(response.data);
+            setLoading(false);
+        } catch (error) {
+            console.error("Error fetching admin stats:", error);
+            setLoading(false);
+        }
+    };
+
+    fetchStats();
+}, []);
 
     if (loading) return <div className="text-center mt-10 text-xl font-semibold">Stats load ho rahe hain...</div>;
 

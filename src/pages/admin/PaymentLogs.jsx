@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import API from "../../services/api";
 
 const PaymentLogs = () => {
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(true);
-    const token = localStorage.getItem('token');
 
-    useEffect(() => {
-        const fetchPayments = async () => {
-            try {
-                const response = await axios.get('http://localhost:8080/api/admin/dashboard/payments', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                setPayments(response.data);
-                setLoading(false);
-            } catch (error) {
-                console.error("Error fetching payment history logs:", error);
-                setLoading(false);
-            }
-        };
-        fetchPayments();
-    }, []);
+   useEffect(() => {
+ const fetchPayments = async () => {
+    try {
+        const response = await API.get("/admin/dashboard/payments");
+
+        setPayments(response.data);
+        setLoading(false);
+    } catch (error) {
+        console.error("Error fetching payment history logs:", error);
+        setLoading(false);
+    }
+};
+    fetchPayments();
+}, []);
 
     if (loading) return <div className="p-6">Loading transaction logs history...</div>;
 
