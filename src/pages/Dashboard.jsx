@@ -17,7 +17,6 @@ export default function Dashboard() {
     useEffect(() => {
         const fetchResumes = async () => {
             try {
-                // GET /api/resumes
                 const response = await API.get('/resumes');
                 setResumes(response.data);
             } catch (err) {
@@ -36,11 +35,8 @@ export default function Dashboard() {
         setCreateLoading(true);
 
         try {
-            // POST /api/resumes -> Sends body { title }
             const response = await API.post('/resumes', { title: newTitle });
             const createdResume = response.data;
-            
-            // Instantly redirect to the designer workspace editor
             navigate(`/editor/${createdResume.id}`);
         } catch (err) {
             alert("Error initializing resume document instance.");
@@ -54,7 +50,7 @@ export default function Dashboard() {
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
             
-            {/* Top Corporate Management Bar */}
+            {/* Top Corporate Management Bar with Profile Image */}
             <nav className="bg-white border-b border-slate-200 sticky top-0 z-40 px-6 py-4">
                 <div className="max-w-7xl mx-auto flex justify-between items-center">
                     <div className="flex items-center space-x-3">
@@ -65,11 +61,25 @@ export default function Dashboard() {
                     </div>
                     
                     <div className="flex items-center space-x-4">
-                        <div className="text-right hidden sm:block">
-                            <p className="text-xs font-semibold text-slate-900">{user?.name}</p>
-                            <span className="inline-flex items-center text-[10px] uppercase tracking-wider font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-full mt-0.5">
-                                {user?.subscriptionPlan} account
-                            </span>
+                        {/* ✅ Profile Section with Image */}
+                        <div className="flex items-center space-x-3">
+                            {user?.profileImageUrl ? (
+                                <img 
+                                    src={user.profileImageUrl} 
+                                    alt={user?.name || 'User'} 
+                                    className="w-9 h-9 rounded-full object-cover border-2 border-indigo-200"
+                                />
+                            ) : (
+                                <div className="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-sm font-bold text-indigo-600">
+                                    {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+                                </div>
+                            )}
+                            <div className="text-right hidden sm:block">
+                                <p className="text-xs font-semibold text-slate-900">{user?.name}</p>
+                                <span className="inline-flex items-center text-[10px] uppercase tracking-wider font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-full mt-0.5">
+                                    {user?.subscriptionPlan} account
+                                </span>
+                            </div>
                         </div>
                         <button 
                             onClick={logout}
