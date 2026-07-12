@@ -99,7 +99,7 @@ export default function Register() {
 
             setMessage({
                 type: 'success',
-                text: 'Registration successful! Ek verification email aapki ID par bheja gaya hai. Kripya apna inbox check karein.'
+                text: 'Registration successful! The verification Link is send to your Email ID Please Verify Your EmailID.'
             });
 
             setRegisteredEmail(userEmail);
@@ -124,7 +124,7 @@ export default function Register() {
 
         try {
             await API.post('/auth/resend-verification', { email: registeredEmail });
-            setMessage({ type: 'success', text: 'Verification email fir se bhej diya gaya hai! Check karein.' });
+            setMessage({ type: 'success', text: 'Verification email is sned again.' });
         } catch (error) {
             let errorMsg = 'Failed to resend verification email.';
             if (error.response && error.response.data) {
@@ -259,7 +259,7 @@ export default function Register() {
 
                 {registeredEmail && (
                     <div className="mt-5 p-3 bg-indigo-50 rounded-xl text-center border border-indigo-100 animate-fade-in">
-                        <p className="text-xs text-indigo-900 mb-1">Email nahi mila?</p>
+                        <p className="text-xs text-indigo-900 mb-1">Email Not found?</p>
                         <button
                             type="button"
                             onClick={handleResendEmail}
@@ -274,7 +274,7 @@ export default function Register() {
                 <div className="text-center mt-6 text-sm text-gray-600">
                     Pehle se account hai?{' '}
                     <Link to="/login" className="text-indigo-600 font-semibold hover:underline">
-                        Login karein
+                        Login
                     </Link>
                 </div>
 
