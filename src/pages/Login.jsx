@@ -41,7 +41,7 @@ export default function Login() {
             }
 
         } catch (err) {
-            const serverMessage = err.response?.data?.message || 'Invalid credentials or unverified email.';
+            const serverMessage = err.response?.data?.message || 'Login failed. Please try again.';
             setError(serverMessage);
         } finally {
             setLoading(false);
