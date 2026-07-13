@@ -27,7 +27,7 @@ const AdminDashboard = () => {
     fetchStats();
 }, []);
 
-    if (loading) return <div className="text-center mt-10 text-xl font-semibold">Stats load ho rahe hain...</div>;
+    if (loading) return <div className="text-center mt-10 text-xl font-semibold">Loading</div>;
 
     return (
         <div className="p-6 bg-gray-100 min-h-screen">

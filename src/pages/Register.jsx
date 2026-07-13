@@ -272,7 +272,7 @@ export default function Register() {
                 )}
 
                 <div className="text-center mt-6 text-sm text-gray-600">
-                    Pehle se account hai?{' '}
+                    Already have account?{' '}
                     <Link to="/login" className="text-indigo-600 font-semibold hover:underline">
                         Login
                     </Link>
