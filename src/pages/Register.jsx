@@ -259,7 +259,6 @@ export default function Register() {
 
                 {registeredEmail && (
                     <div className="mt-5 p-3 bg-indigo-50 rounded-xl text-center border border-indigo-100 animate-fade-in">
-                        <p className="text-xs text-indigo-900 mb-1">Email Not found?</p>
                         <button
                             type="button"
                             onClick={handleResendEmail}
